@@ -27,14 +27,12 @@ getList(originalPath, function(list){
 		// 所有來自 readable 的資料，都會被寫入到 '/logs/TEST/'+arr[i]' 檔中
 		readable.pipe(writable);
 		console.log('file copied:'+element); 
-		}
-	);
+        
+        // 設定 1 毫秒後，解除 pipe() 的串流，由於 1 毫秒過短，所以應該會複製不了，設500ms。
+        setTimeout(function(){
+            readable.unpipe(writable);
+            writable.end();
+        }, 500);
+	});
 	console.log('files copied completed'); 
-	
 });
-// 設定 1 毫秒後，解除 pipe() 的串流，由於 1 毫秒過短，所以應該會複製不了，設500ms。
-setTimeout(function(){
-	readable.unpipe(writable);
-	writable.end();
-}, 500);
-
